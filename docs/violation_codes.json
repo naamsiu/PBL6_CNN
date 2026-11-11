@@ -1,0 +1,32 @@
+[
+  {
+    "code": "DROWSINESS",
+    "name": "Buồn ngủ",
+    "description": "Nhắm mắt ≥ 1,5 s; hoặc nhắm mắt ≥ 0,7 s kèm gật đầu; hoặc PERCLOS đạt ngưỡng; hoặc ngáp lặp lại."
+  },
+  {
+    "code": "DISTRACTED_LOOK_AWAY",
+    "name": "Quay đầu mất tập trung",
+    "description": "Góc yaw lệch > 35° và bộ đếm nhìn lệch đạt ≥ 2 s."
+  },
+  {
+    "code": "DISTRACTED_LOOK_DOWN",
+    "name": "Cúi nhìn xuống mất tập trung",
+    "description": "Góc cúi > 30° và bộ đếm nhìn lệch đạt ≥ 2 s."
+  },
+  {
+    "code": "YAWNING",
+    "name": "Ngáp",
+    "description": "Miệng mở vượt ngưỡng động sau hiệu chỉnh, liên tục ≥ 0,7 s."
+  },
+  {
+    "code": "HEAD_NOD",
+    "name": "Gật/cúi đầu",
+    "description": "Cúi so với mốc > 20° liên tục ≥ 0,45 s; có fallback dịch chuyển mặt khi không có pose."
+  },
+  {
+    "code": "FACE_NOT_VISIBLE",
+    "name": "Không thấy khuôn mặt",
+    "description": "Camera vẫn có ảnh, detector chạy thành công nhưng không thấy mặt liên tục ≥ 2 s; khoảng cách quan sát không quá 0,5 s."
+  }
+]

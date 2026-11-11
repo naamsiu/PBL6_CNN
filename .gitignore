@@ -1,0 +1,37 @@
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+env/
+venv/
+.venv/
+.pytest_cache/
+
+# Secrets and local configuration
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Runtime logs and captured data
+logs/
+violation_outbox/
+*.log
+
+# C++ build output
+build/
+cmake-build-*/
+CMakeFiles/
+CMakeCache.txt
+
+# Editor
+.vscode/
+.idea/
+
+# Archives
+*.zip
+*.7z
+

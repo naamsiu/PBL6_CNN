@@ -15,3 +15,30 @@ add_executable(oled_temp
 target_include_directories(oled_temp PRIVATE include)
 
 target_compile_options(oled_temp PRIVATE -Wall -Wextra -O2)
+
+
+# Chuong trinh nhan UART tu ESP32
+add_executable(uart_test
+    src/uart_test.cpp
+    src/uart.cpp
+)
+
+# Duong dan thu vien header
+target_include_directories(uart_test PRIVATE include)
+
+# Canh bao khi bien dich
+target_compile_options(uart_test PRIVATE -Wall -Wextra -O2)
+
+
+
+# Chuong trinh tich hop OLED va UART
+add_executable(monitor_main
+    src/monitor_main.cpp
+    src/oled.cpp
+    src/system_info.cpp
+    src/uart.cpp
+)
+
+target_include_directories(monitor_main PRIVATE include)
+
+target_compile_options(monitor_main PRIVATE -Wall -Wextra -O2)

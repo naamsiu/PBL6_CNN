@@ -35,3 +35,4 @@ CMakeCache.txt
 *.zip
 *.7z
 
+embedded_cpp/build/

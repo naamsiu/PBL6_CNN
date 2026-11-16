@@ -21,6 +21,7 @@ from app.config import (
     FACE_BOX_PAD_BOTTOM,
 )
 from app.drowsiness import DrowsinessEngine
+from app.event_socket_client import AiEventClient
 from app.inference.eye_landmarks import LandmarkEyes, unknown_eyes
 from app.inference.landmark import Landmark98
 from app.inference.nanodet import NanoDetFaceDetector
@@ -294,6 +295,9 @@ class FullMonitor:
         )
 
         self.drowsiness = DrowsinessEngine()
+        self.ai_event_client = AiEventClient()
+        self._last_ipc_state = None
+        self._next_ipc_retry_at = 0.0
 
         self.client = FaceClient() if require_auth else None
 
@@ -797,8 +801,29 @@ class FullMonitor:
             event["cooldown_until"] = now + 30.0
             print("[VIOLATION] queued", code, event_id)
 
+    
+
+
+    def _publish_ai_state(self, state):
+        current = state.get("state")
+
+        if not current or current == self._last_ipc_state:
+            return
+
+        now = time.monotonic()
+
+        if now < self._next_ipc_retry_at:
+            return
+
+        if self.ai_event_client.send(current):
+            self._last_ipc_state = current
+            self._next_ipc_retry_at = 0.0
+        else:
+            self._next_ipc_retry_at = now + 1.0
+
     def _show_state(self, display, state, face=None, landmarks=None, evidence_frame=None):
         overlay_started = time.perf_counter() if self.profile_enabled else None
+        self._publish_ai_state(state)
         self._queue_violation(evidence_frame, state)
         self._handle_alert(state)
         self._log_eye(state)

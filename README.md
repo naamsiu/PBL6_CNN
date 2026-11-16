@@ -51,3 +51,11 @@ python cli.py monitor --skip-auth --backend opencv --camera 0 --width 1280 --hei
 ## Face far / bounding box extends below chin
 
 See `CHANGES_FAR_CAMERA.md` for zoom, crop, resolution and pixel-gating settings. The visible box expansion does not alter EAR calculations, pose or API.
+
+## Technologies Used
+
+- Python: AI, Computer Vision, OpenCV
+- C++17: Embedded Linux, UART, OLED SSD1306
+- C/C++: ESP32 Firmware
+- CMake: Build System
+- Linux: Raspberry Pi

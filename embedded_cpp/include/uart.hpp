@@ -21,6 +21,9 @@ public:
     ssize_t readBytes(char* buffer, std::size_t size);
     ssize_t readAvailable(char* buffer, std::size_t size);
 
+    // Send one command to ESP32, terminating it with a newline.
+    bool sendLine(const char* line);
+
 private:
     int fd_ = -1;
 };

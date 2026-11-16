@@ -7,6 +7,8 @@
 #include <termios.h>
 #include <poll.h>
 #include <cerrno>
+#include <cstring>
+#include <string>
 
 // Mo va cau hinh UART
 bool UartDevice::connect(const char* device)
@@ -104,4 +106,47 @@ ssize_t UartDevice::readAvailable(char* buffer, std::size_t size)
 
     // Chi doc khi UART san sang
     return read(fd_, buffer, size);
+}
+
+// UART full-duplex: send a complete line to the ESP32.
+// The protocol accepts short ASCII commands, without embedded CR/LF.
+bool UartDevice::sendLine(const char* line)
+{
+    if (fd_ < 0 || line == nullptr) {
+        errno = EINVAL;
+        return false;
+    }
+
+    const std::size_t len = std::strlen(line);
+    if (len == 0 || len > 64 ||
+        std::strchr(line, '\n') != nullptr ||
+        std::strchr(line, '\r') != nullptr) {
+        errno = EINVAL;
+        return false;
+    }
+
+    std::string packet(line);
+    packet.push_back('\n');
+    const char* p = packet.data();
+    std::size_t remaining = packet.size();
+
+    while (remaining > 0) {
+        const ssize_t n = write(fd_, p, remaining);
+        if (n > 0) {
+            p += n;
+            remaining -= static_cast<std::size_t>(n);
+            continue;
+        }
+        if (n < 0 && errno == EINTR) continue;
+        if (n < 0 && (errno == EAGAIN || errno == EWOULDBLOCK)) {
+            pollfd pfd{};
+            pfd.fd = fd_;
+            pfd.events = POLLOUT;
+            if (poll(&pfd, 1, 50) > 0 && (pfd.revents & POLLOUT))
+                continue;
+        }
+        std::perror("UART sendLine");
+        return false;
+    }
+    return true;
 }

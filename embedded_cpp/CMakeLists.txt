@@ -37,8 +37,12 @@ add_executable(monitor_main
     src/oled.cpp
     src/system_info.cpp
     src/uart.cpp
+    src/ai_event_server.cpp
 )
 
 target_include_directories(monitor_main PRIVATE include)
 
 target_compile_options(monitor_main PRIVATE -Wall -Wextra -O2)
+
+
+
